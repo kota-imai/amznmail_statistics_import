@@ -10,15 +10,15 @@ import dataaccess.UpdateStatisticsDao;
 public class SaveStaticsFromAthena {
 	public static void main(String[] args) {
 
-		// 検索結果のメモリ確保
+		// 検索結果にメモリ確保
 		List<String> list = new ArrayList<String>();
 		// Athena接続
 		AthenaDao athdao = new AthenaDao();
 		list = athdao.search();
 
-		// データをMySQLに書き込み
+		// データがあればMySQLに書き込み
 		if (list.isEmpty()) {
-			System.out.println("No Data found to import");
+			System.out.println("取り込むデータはありませんでした");
 		} else {
 			try {
 				// 当日分のデータがある場合のみMySQLにデータを移動する

@@ -9,13 +9,14 @@ import java.util.List;
 import config.MysqlConfig;
 
 public class UpdateStatisticsDao {
-    public void saveStatistics(List<String> list) throws SQLException {
+	public void saveStatistics(List<String> list) throws SQLException {
 
 		String insertSql = buildSql(list);// SQL文を作成
 
+		MysqlConfig mySql = new MysqlConfig();
 		Connection conn = null;
 		PreparedStatement ps = null;
-		MysqlConfig mySql = new MysqlConfig();
+		
 		try {
 			conn = DriverManager.getConnection(mySql.getURL(), mySql.getUSER(), mySql.getPASSWORD());
 			conn.setAutoCommit(false);
@@ -28,12 +29,7 @@ public class UpdateStatisticsDao {
 			System.out.println("***データの更新に失敗しました***");
 			e.printStackTrace();
 		} finally {
-			if (ps != null) {
-				ps.close();
-			}
-			if (conn != null) {
-				conn.close();
-			} // close
+			new Closer().closeConnection(conn, ps); // クローズ処理
 		}
 	}
 
