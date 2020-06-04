@@ -7,25 +7,27 @@ import java.sql.SQLException;
 import java.util.List;
 
 import config.MysqlConfig;
+import dataaccess.parent.MySqlDao;
 
-public class UpdateStatisticsDao {
+public class UpdateStatisticsDao extends MySqlDao{
 	public void saveStatistics(List<String> list) throws SQLException {
 
-		String insertSql = buildSql(list);// SQL文を作成
+		String query = buildQuery(list);// SQL文を作成
 
-		MysqlConfig mySql = new MysqlConfig();
 		Connection conn = null;
 		PreparedStatement ps = null;
-		
+
+		this.init();
+		this.setSQL(query);
 		try {
-			conn = DriverManager.getConnection(mySql.getURL(), mySql.getUSER(), mySql.getPASSWORD());
-			conn.setAutoCommit(false);
-			ps = conn.prepareStatement(insertSql);
+			conn = DriverManager.getConnection(config.getUrl(), config.getUser(), config.getPassword());
+			conn.setAutoCommit(false); // 自動コミットしない
+			ps = conn.prepareStatement(this.getSQL());
 			ps.executeUpdate();
 			conn.commit();
 			System.out.println("データ追加完了！");
 		} catch (Exception e) {
-			conn.rollback();
+			conn.rollback(); // 失敗したらロールバック
 			System.out.println("***データの更新に失敗しました***");
 			e.printStackTrace();
 		} finally {
@@ -34,7 +36,7 @@ public class UpdateStatisticsDao {
 	}
 
 	// データ追加用SQL生成処理
-	private String buildSql(List<String> list) {
+	private String buildQuery(List<String> list) {
 		StringBuilder sb = new StringBuilder();
 		final String SQL = "insert into Statics" + "(" + "EventType" + ",StreamedTimestamp" + ",FromAddress"
 				+ ",ToAddress" + ",ConfigSet" + ",SourceIP" + ",AuthenticatedBy" + ",UserOpenTimeStamp" + ",UserAgent"
