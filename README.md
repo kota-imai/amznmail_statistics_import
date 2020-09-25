@@ -4,7 +4,7 @@ amazon出品者向けのシステムです。
 
 amazonサーバーから注文情報を取得して購入者のメールアドレスにお礼メールを送信します。
 
-
+[Web画面](https://maidomail.biz/)
 
 ## Description
 
@@ -30,15 +30,7 @@ MySQLにDB保存してBIツールでKPIを監視できるようにする
 
 ## Demo
 
-
-
-
-
-
-
-
-
-
+![maidomail_demo](https://user-images.githubusercontent.com/56163213/94266146-ad7a8b00-ff74-11ea-983c-376cb4ce7bb6.png)
 
 ## VS.
 
